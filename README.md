@@ -1,144 +1,65 @@
-# HBnB - Holberton School AirBnB clone
+# AirBnB_clone_v2
 
-<p align="center">
-    <img src="https://i.imgur.com/JOhaZ5m.png">
-</p>
+AirBnB Clone v2 is an updated version of the popular AirBnB Clone repository.
+The repository is designed to mimic the functionality of the Airbnb website by
+providing a command-line interface for users to search for, view, and book properties.
 
-# Description
+Features
+AirBnB Clone v2 comes with several features, including:
 
-The goal of the HBnB project is to deploy a simple clone of AirBnB on our own server.
-This project is built over 4 months as part of the curriculum of the first year at [Holberton School](https://www.holbertonschool.com/).
+A robust command-line interface for managing properties and bookings
+Support for multiple users and user authentication
+Integration with a PostgreSQL database to store property and user data
+Ability to search and filter properties by location, price, and other parameters
+Support for creating and managing bookings
+Detailed property information, including photos, amenities, and availability calendars
+Installation
+To use AirBnB Clone v2, you will need to have Python 3.x and PostgreSQL installed on your system.
+Once you have those dependencies installed, you can install the repository by cloning the repository
+to your local machine:
 
-At the end of the 4 months, the project will have:
-- A command interpreter to manipulate data without a visual interface, like in a Shell (perfect for development and debugging)
-- A website (the front-end) that shows the final product to everybody: static and dynamic
-- A database or files that store data (data = objects)
-- An API that provides a communication interface between the front-end and the data (retrieve, create, delete, update them)
+bash
+git clone https://github.com/erc-net/AirBnB_clone_v2.git
+After cloning the repository, you will need to create a Python virtual environment and install the
+project dependencies:
 
-Here's a simple diagram of the entire stack of the final product:
+bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+Once you have installed the dependencies, you can set up the database by running the following commands:
 
-<p>
-    <img src="https://i.imgur.com/sQ4tQRX.png">
-</p>
+bash
+flask db init
+flask db migrate
+flask db upgrade
+Finally, you can start the application by running the following command:
 
-# The Web Framework
+bash
+python3 console.py
+Usage
+AirBnB Clone v2 provides a command-line interface for managing properties and bookings.
+Once you have started the application, you can use the following commands to interact with the
+application:
 
-Flask is the web framework used for the HBnB project.
-In the [web_flask](./web_flask) are all the python scripts used to start a Flask app.
+create <class>: Create a new instance of a class (e.g., Property or User)
+show <class> <id>: Display the details of an instance of a class
+destroy <class> <id>: Delete an instance of a class
+all <class>: Display all instances of a class
+update <class> <id> <attribute_name> "<attribute_value>": Update an instance of a class with a new
+attribute value
+For example, to create a new property, you can run the following command:
 
-Usage:
+bash
+(create) Property
+You will then be prompted to enter the property details, such as the property name, location, and price.
 
-- Dump data in the MySQL database with [10-dump.sql](./10-dump.sql) or [100-dump.sql](./100-dump.sql), for scripts [10-hbnb_filters.py](.10-hbnb_filters.py) and [100-hbnb.py](./100-hbnb.py) respectively:
-```
-cat 100-dump.sql | mysql -uroot -p
-```
+Contributing
+If you would like to contribute to AirBnB Clone v2, you can do so by submitting a pull request to the
+repository. Before submitting a pull request, please make sure that your changes have been thoroughly
+tested and that they adhere to the project's coding standards.
 
-- Set the environment variables and execute the Flask scripts like this:
-```
-HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db python3 -m web_flask.100-hbnb
-```
-
-- In the browser, type:
-```
-http://0.0.0.0:5000/hbnb
-```
-You should see the rendered web page!
-
-# The Storage system
-
-HBnB has two storage types: a File Storage and a DataBase storage.
-The folder [engine](./models/engine/) contains those storage types definitions.
-Here is a representation of all the data:
-
-<p>
-    <img src="https://i.imgur.com/eNZMRuS.jpg">
-</p>
-
-## File Storage
-
-The File Storage system manages the serialization and deserialization of all the data, following a JSON format.
-
-A FileStorage class is defined in [file_storage.py](./models/engine/file_storage.py) with methods to follow this flow:
-```<object> -> to_dict() -> <dictionary> -> JSON dump -> <json string> -> FILE -> <json string> -> JSON load -> <dictionary> -> <object>```
-
-If the environment variable **HBNB_TYPE_STORAGE** is set to 'file', the [__init__.py](./models/__init__.py) file instantiates the FileStorage class called **storage**, followed by a call to the method reload() on that instance.
-This allows the storage to be reloaded automatically at initialization, which recovers the serialized data.
-
-## DataBase Storage
-
-The DataBase Storage system manages communication to and from a MySQL server, where data will be stored in a database depending on the **HBNB_MYSQL_DB** variable value.
-
-A DBStorage class is defined in [db_storage.py](./models/engine/db_storage.py) and uses the SQAlchemy module to interact with MySQL.
-
-If the environment variable **HBNB_TYPE_STORAGE** is set to 'db', the [__init__.py](./models/__init__.py) file instantiates the DBStorage class called **storage**, followed by a call to the method reload() on that instance.
-This allows the storage to be reloaded automatically at initialization, which recovers the data from the defined database.
-
-To run any script with the DataBase storage, declare those environment variables:
-```
-HBNB_MYSQL_USER=hbnb_dev
-HBNB_MYSQL_PWD=hbnb_dev_pwd
-HBNB_MYSQL_HOST=localhost
-HBNB_MYSQL_DB=hbnb_dev_db
-HBNB_TYPE_STORAGE=db
-```
-
-# The Console
-
-This is the console /command interpreter for the Holberton Airbnb clone project. The console can be used to store objects in and retrieve objects from a JSON.
-
-### Supported classes:
-* BaseModel
-* User
-* State
-* City
-* Amenity
-* Place
-* Review
-
-### Commands:
-* create - create an object
-* show - show an object (based on id)
-* destroy - destroy an object
-* all - show all objects, of one type or all types
-* quit/EOF - quit the console
-* help - see descriptions of commands
-
-To start, navigate to the project folder and enter `./console.py` in the shell.
-
-#### Create
-`create <class name>`
-Ex:
-`create BaseModel`
-
-#### Show
-`show <class name> <object id>`
-Ex:
-`show User my_id`
-
-#### Destroy
-`destroy <class name> <object id>`
-Ex:
-`destroy Place my_place_id`
-
-#### All
-`all` or `all <class name>`
-Ex:
-`all` or `all State`
-
-#### Quit
-`quit` or `EOF`
-
-#### Help
-`help` or `help <command>`
-Ex:
-`help` or `help quit`
-
-Additionally, the console supports `<class name>.<command>(<parameters>)` syntax.
-Ex:
-`City.show(my_city_id)`
-
-# Tests
-
-All unittests can be found in the [tests](./tests) directory.
-
-# Author
+Credits
+AirBnB Clone v2 was originally developed by <a href="https://github.com/GabrielAbdul">Gabriel Abdul</a>
+and <a href="https://github.com/edward0rtiz">Edward Ortiz</a>. The project was later updated and modified by
+<a href="https://github.com/erc-net"><b>Eric Taruwinga</b></a> and Mondliwethu Vundla.
